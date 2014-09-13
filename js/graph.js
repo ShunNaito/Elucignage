@@ -59,7 +59,7 @@ var context = svg.append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 // データを読み込む
-d3.csv("./data/gasoli.csv", function(error, data) {
+d3.csv("./data/gasolin.csv", function(error, data) {
     // データをフォーマット
     data.forEach(function(d) {
         d.date = parseDate(d.date);
