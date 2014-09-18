@@ -1,4 +1,4 @@
-var xmlFiles = new Array("data.xml","data1.xml","data2.xml");
+var xmlFiles = new Array("981114074.xml","981115231.xml","981125080.xml");
 $(function(){
     // カウンターを生成
     var counter = 0;
