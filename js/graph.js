@@ -98,7 +98,26 @@ d3.csv("./data/gasoli.csv", function(error, data) {
     focus.append("path")
             .datum(data)
             .attr("class", "line")
-            .attr("d", line)
+            .attr("d", line);
+
+
+    //上のグラフに円を描画
+    focus.selectAll("circle")
+         .data(data)
+         .enter()
+         .append("circle")
+         .attr("cx", function(d) {
+            return x(d.date);
+         })
+         .attr("cy", function(d) {
+            return y(d.close);
+         })
+         .attr("r", 5)
+         .attr("fill", 'steelblue')
+         .on("click", function(d) {
+                var rs = d3.select(this).attr("r");
+                alert(rs);
+            });
 
     context.append("path")
       .datum(data)
