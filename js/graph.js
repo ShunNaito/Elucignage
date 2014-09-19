@@ -25,24 +25,24 @@ var xAxis = d3.svg.axis().scale(x).orient("bottom"),
 
 //ブラッシュ
 var brush = d3.svg.brush()
-     .x(x2)
-     .on("brush", brushed);
+    .x(x2)
+    .on("brush", brushed);
 
 // 線の定義
 var line = d3.svg.line()
-        .x(function(d) { return x(d.date); })
-        .y(function(d) { return y(d.close); });
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
 
 var line2 = d3.svg.line()
-        .x(function(d) { return x2(d.date); })
-        .y(function(d) { return y2(d.close); });
+    .x(function(d) { return x2(d.date); })
+    .y(function(d) { return y2(d.close); });
 
 // svgの定義
 var svg = d3.select("#graph").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom);
-        //.append("g")
-        //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom);
+    //.append("g")
+    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 svg.append("defs").append("clipPath")
     .attr("id", "clip")
@@ -76,36 +76,39 @@ d3.csv("./data/gasoli.csv", function(error, data) {
 
     // x軸をsvgに表示
     focus.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
+         .attr("class", "x axis")
+         .attr("transform", "translate(0," + height + ")")
+         .call(xAxis);
 
     // y軸をsvgに表示
     focus.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-            .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Price ($)");
+         .attr("class", "y axis")
+         .call(yAxis)
+         .append("text")
+         .attr("transform", "rotate(-90)")
+         .attr("y", 6)
+         .attr("dy", ".71em")
+         .style("text-anchor", "end")
+         .text("Price ($)");
 
     // 画像の定義
     var imgList = ['mushroom'];
 
     // path要素をsvgに表示し、折れ線グラフを設定
     focus.append("path")
-            .datum(data)
-            .attr("class", "line")
-            .attr("d", line);
+         .datum(data)
+         .attr("class", "line")
+         .attr("d", line);
 
 
     //上のグラフに円を描画
-    focus.selectAll("circle")
+    var circlegroup = focus.append("g");
+    circlegroup.attr("clip-path", "url(#clip)");
+    circlegroup.selectAll('.dot')
          .data(data)
          .enter()
          .append("circle")
+         .attr('class', 'dot')
          .attr("cx", function(d) {
             return x(d.date);
          })
@@ -115,39 +118,38 @@ d3.csv("./data/gasoli.csv", function(error, data) {
          .attr("r", 5)
          .attr("fill", 'steelblue')
          .on("click", function(d) {
-                var rs = d3.select(this).attr("r");
-                alert(rs);
+                alert(d.ArticleNumber);
             });
 
     context.append("path")
-      .datum(data)
-      .attr("class", "line")
-      .attr("d", line2);
+           .datum(data)
+           .attr("class", "line")
+           .attr("d", line2);
 
-      context.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height2 + ")")
-      .call(xAxis2);
+    context.append("g")
+           .attr("class", "x axis")
+           .attr("transform", "translate(0," + height2 + ")")
+           .call(xAxis2);
 
-      context.append("g")
-      .attr("class", "x brush")
+    context.append("g")
+           .attr("class", "x brush")
       .call(brush)
       .selectAll("rect")
       .attr("y", -6)
       .attr("height", height2 + 7);
 
-       focus.append('image')
-                .datum(data)
-                .attr({
-                'xlink:href': function (data) {
-                  return 'images/arrow2.png';
-                },
-                'width'     : 50,
-                'height'    : 50,
-                'x'         : 165,
-                'y'         : -15,
-                'class'     : 'arrow'
-              });
+    focus.append('image')
+         .datum(data)
+         .attr({
+          'xlink:href': function (data) {
+            return 'images/arrow2.png';
+           },
+           'width'     : 50,
+           'height'    : 50,
+           'x'         : 165,
+           'y'         : -15,
+           'class'     : 'arrow'
+         });
 
         var iconimg = document.querySelector('.arrow');
 
@@ -160,4 +162,10 @@ function brushed() {
   x.domain(brush.empty() ? x2.domain() : brush.extent());
   focus.select(".line").attr("d", line);
   focus.select(".x.axis").call(xAxis);
+  focus.selectAll(".dot").attr("cx", function(d) {
+            return x(d.date);
+         })
+         .attr("cy", function(d) {
+            return y(d.close);
+         })
 }
