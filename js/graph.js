@@ -102,10 +102,13 @@ d3.csv("./data/gasoli.csv", function(error, data) {
 
 
     //上のグラフに円を描画
-    focus.selectAll("circle")
+    var circlegroup = focus.append("g");
+    circlegroup.attr("clip-path", "url(#clip)");
+    circlegroup.selectAll('.dot')
          .data(data)
          .enter()
          .append("circle")
+         .attr('class', 'dot')
          .attr("cx", function(d) {
             return x(d.date);
          })
@@ -116,8 +119,7 @@ d3.csv("./data/gasoli.csv", function(error, data) {
          .attr("fill", 'steelblue')
          .on("click", function(d) {
                 alert(d.ArticleNumber);
-            })
-         .attr("class", "circle");
+            });
 
     context.append("path")
            .datum(data)
@@ -149,15 +151,21 @@ d3.csv("./data/gasoli.csv", function(error, data) {
            'class'     : 'arrow'
          });
 
-    var iconimg = document.querySelector('.arrow');
+        var iconimg = document.querySelector('.arrow');
 
-    iconimg.addEventListener("click", function(){
-        document.querySelector('.article').style.fontWeight = 'bolder';
-    });
+        iconimg.addEventListener("click", function(){
+            document.querySelector('.article').style.fontWeight = 'bolder';
+        });
 });
 
 function brushed() {
   x.domain(brush.empty() ? x2.domain() : brush.extent());
   focus.select(".line").attr("d", line);
   focus.select(".x.axis").call(xAxis);
+  focus.selectAll(".dot").attr("cx", function(d) {
+            return x(d.date);
+         })
+         .attr("cy", function(d) {
+            return y(d.close);
+         })
 }
