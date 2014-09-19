@@ -102,13 +102,13 @@ d3.csv("./data/gasoli.csv", function(error, data) {
 
 
     //上のグラフに円を描画
-    var circlegroup = focus.append("g");
-    circlegroup.attr("clip-path", "url(#clip)");
-    circlegroup.selectAll('.dot')
+    focus.append("g")
+         .attr("clip-path", "url(#clip)")
+         .selectAll('.circle')
          .data(data)
          .enter()
          .append("circle")
-         .attr('class', 'dot')
+         .attr('class', 'circle')
          .attr("cx", function(d) {
             return x(d.date);
          })
@@ -118,8 +118,8 @@ d3.csv("./data/gasoli.csv", function(error, data) {
          .attr("r", 5)
          .attr("fill", 'steelblue')
          .on("click", function(d) {
-                alert(d.ArticleNumber);
-            });
+            tako(d.ArticleNumber + ".xml");
+         });
 
     context.append("path")
            .datum(data)
@@ -133,10 +133,10 @@ d3.csv("./data/gasoli.csv", function(error, data) {
 
     context.append("g")
            .attr("class", "x brush")
-      .call(brush)
-      .selectAll("rect")
-      .attr("y", -6)
-      .attr("height", height2 + 7);
+           .call(brush)
+           .selectAll("rect")
+           .attr("y", -6)
+           .attr("height", height2 + 7);
 
     focus.append('image')
          .datum(data)
@@ -162,10 +162,38 @@ function brushed() {
   x.domain(brush.empty() ? x2.domain() : brush.extent());
   focus.select(".line").attr("d", line);
   focus.select(".x.axis").call(xAxis);
-  focus.selectAll(".dot").attr("cx", function(d) {
+  focus.selectAll(".circle").attr("cx", function(d) {
             return x(d.date);
          })
          .attr("cy", function(d) {
             return y(d.close);
-         })
+         });
+
+}
+
+function tako(xml){
+  // カウンターを生成
+  var counter = 0;
+  var j = 0;
+  if(counter == 0){
+        // 「data.xml」を読み込む
+        $.get("./data/" + xml,
+            {},
+            createList,
+            "xml"
+        );
+    }
+      counter = 1; // 一度だけ実行させる
+}
+
+// 表を作成する関数
+var createList = function(xml) {
+    // datasetタグの要素を繰り返し処理する
+    $(xml).find("DOC").each(function(){
+
+        // data_labelタグのテキストを取り出す
+        var label = $(this).find("TEXT").text();
+        // header行にラベルの列を追加する
+        $("#list").append("<div class='article' id='article' style='width: auto; height: 25%; overflow: auto; margin-top: 0.1em; background-color: #ffffff; border: 1px #c0c0c0 solid; color: #000000;'>" + label + "</div>");
+    });
 }
