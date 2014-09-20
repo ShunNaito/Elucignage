@@ -59,7 +59,7 @@ var context = svg.append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 // データを読み込む
-d3.csv("./data/gasoli.csv", function(error, data) {
+d3.csv("./data/gasoline.csv", function(error, data) {
     // データをフォーマット
     data.forEach(function(d) {
         d.date = parseDate(d.date);
@@ -138,24 +138,24 @@ d3.csv("./data/gasoli.csv", function(error, data) {
       .attr("y", -6)
       .attr("height", height2 + 7);
 
-    focus.append('image')
-         .datum(data)
-         .attr({
-          'xlink:href': function (data) {
-            return 'images/arrow2.png';
-           },
-           'width'     : 50,
-           'height'    : 50,
-           'x'         : 165,
-           'y'         : -15,
-           'class'     : 'arrow'
-         });
+    // focus.append('image')
+    //      .datum(data)
+    //      .attr({
+    //       'xlink:href': function (data) {
+    //         return 'images/arrow2.png';
+    //        },
+    //        'width'     : 50,
+    //        'height'    : 50,
+    //        'x'         : 165,
+    //        'y'         : -15,
+    //        'class'     : 'arrow'
+    //      });
 
-        var iconimg = document.querySelector('.arrow');
+    //     var iconimg = document.querySelector('.arrow');
 
-        iconimg.addEventListener("click", function(){
-            document.querySelector('.article').style.fontWeight = 'bolder';
-        });
+    //     iconimg.addEventListener("click", function(){
+    //         document.querySelector('.article').style.fontWeight = 'bolder';
+    //     });
 });
 
 function brushed() {
