@@ -167,5 +167,5 @@ function brushed() {
          })
          .attr("cy", function(d) {
             return y(d.close);
-         })
+         });
 }
