@@ -26,7 +26,12 @@ $(function(){
             // data_labelタグのテキストを取り出す
             var label = $(this).find("TEXT").text();
             // header行にラベルの列を追加する
-            $("#list").append("<div class='article' id='article" + j +"' onClick='viewSource(" + j +")'>" + label + "</div>");
+	    var $div = $('<div>')
+		    .attr({"id": 'article' + j,
+			   "class": 'article',
+			   "onClick": 'viewSource(' + j + ')'})
+		    .text(label);;
+	    $('#list').append($div);
             j++;
         });
     };
