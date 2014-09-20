@@ -34,6 +34,7 @@ span.title_name{
 	width:25%;
 	height:79%;
 	border-top: 1px solid #FF9900;
+	overflow: auto;
 }
 /*
 #control{

@@ -102,13 +102,13 @@ d3.csv("./data/gasoline.csv", function(error, data) {
 
 
     //上のグラフに円を描画
-    var circlegroup = focus.append("g");
-    circlegroup.attr("clip-path", "url(#clip)");
-    circlegroup.selectAll('.dot')
+    focus.append("g")
+         .attr("clip-path", "url(#clip)")
+         .selectAll('.circle')
          .data(data)
          .enter()
          .append("circle")
-         .attr('class', 'dot')
+         .attr('class', 'circle')
          .attr("cx", function(d) {
             return x(d.date);
          })
@@ -118,7 +118,15 @@ d3.csv("./data/gasoline.csv", function(error, data) {
          .attr("r", 5)
          .attr("fill", 'steelblue')
          .on("click", function(d) {
-                alert(d.ArticleNumber);
+                var position = $("#article3").offset().top;
+                $("#list").animate({
+                    scrollTop : position
+                }, {
+                queue : false
+                });
+                // 現在の縦スクロール位置
+                // var scrollPosition = document.getElementById("list").scrollTop;
+                // document.getElementById("list").scrollTop = position;
             });
 
     context.append("path")
@@ -133,10 +141,10 @@ d3.csv("./data/gasoline.csv", function(error, data) {
 
     context.append("g")
            .attr("class", "x brush")
-      .call(brush)
-      .selectAll("rect")
-      .attr("y", -6)
-      .attr("height", height2 + 7);
+           .call(brush)
+           .selectAll("rect")
+           .attr("y", -6)
+           .attr("height", height2 + 7);
 
     // focus.append('image')
     //      .datum(data)
@@ -162,7 +170,7 @@ function brushed() {
   x.domain(brush.empty() ? x2.domain() : brush.extent());
   focus.select(".line").attr("d", line);
   focus.select(".x.axis").call(xAxis);
-  focus.selectAll(".dot").attr("cx", function(d) {
+  focus.selectAll(".circle").attr("cx", function(d) {
             return x(d.date);
          })
          .attr("cy", function(d) {
