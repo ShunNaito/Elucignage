@@ -26,7 +26,7 @@ $(function(){
             // data_labelタグのテキストを取り出す
             var label = $(this).find("TEXT").text();
             // header行にラベルの列を追加する
-            $("#list").append("<div class='article' id='article" + j +"' style='width: auto; height: 25%; overflow: auto; margin-top: 0.1em; background-color: #ffffff; border: 1px #c0c0c0 solid; color: #000000;' onClick='viewSource(" + j +")'>" + label + "</div>");
+            $("#list").append("<div class='article' id='article" + j +"' onClick='viewSource(" + j +")'>" + label + "</div>");
             j++;
         });
     };
