@@ -19,28 +19,28 @@ $(function(){
 
     // 表を作成する関数
     var createList = function(xml) {
-
         // datasetタグの要素を繰り返し処理する
         $(xml).find("DOC").each(function(){
-
-            // data_labelタグのテキストを取り出す
+            // TEXTタグの中身を取り出す
             var label = $(this).find("TEXT").text();
+            // DOCNOの値を取り出す
+            var num = $(this).find("DOCNO").text();
             // header行にラベルの列を追加する
-        var $div = $('<div>')
-            .attr({"id": 'article' + j,
+            var $div = $('<div>')
+            .attr({"id": num,
                "class": 'article',
-               "onClick": 'viewSource(' + j + ')'})
+               "onClick": 'viewSource('+ num +')'})
             .text(label);;
-        $('#list').append($div);
+            $('#list').append($div);
             j++;
         });
     };
 });
 
 //本文を表示させる
-function viewSource(i){
+function viewSource(num){
     $('.article').remove();
-    $.get("./data/" + xmlFiles[i],
+    $.get("./data/" + num +".xml",
         {},
         createList2,
         "xml"

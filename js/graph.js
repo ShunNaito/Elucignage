@@ -122,8 +122,8 @@ d3.csv("./data/gasoline.csv", function(error, data) {
          .attr("r", 5)
          .attr("fill", 'steelblue')
          .on("click", function(d) {
-            if(d.ArticleNumber == 981114074){
-                var position = $("#article3").offset().top;
+            if(d.ArticleNumber != 0){
+                var position = $("#"+d.ArticleNumber).offset().top;
                 $("#list").animate({
                     scrollTop : position
                 }, {
