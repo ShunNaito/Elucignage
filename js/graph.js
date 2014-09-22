@@ -118,6 +118,7 @@ d3.csv("./data/gasoline.csv", function(error, data) {
          .attr("r", 5)
          .attr("fill", 'steelblue')
          .on("click", function(d) {
+            if(d.ArticleNumber == 981114074){
                 var position = $("#article3").offset().top;
                 $("#list").animate({
                     scrollTop : position
@@ -127,7 +128,8 @@ d3.csv("./data/gasoline.csv", function(error, data) {
                 // 現在の縦スクロール位置
                 // var scrollPosition = document.getElementById("list").scrollTop;
                 // document.getElementById("list").scrollTop = position;
-            });
+            }
+         });
 
     context.append("path")
            .datum(data)
