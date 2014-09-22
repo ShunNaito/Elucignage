@@ -110,10 +110,14 @@ d3.csv("./data/gasoline.csv", function(error, data) {
          .append("circle")
          .attr('class', 'circle')
          .attr("cx", function(d) {
-            return x(d.date);
+            if(d.ArticleNumber != 0){
+                return x(d.date);
+            }
          })
          .attr("cy", function(d) {
-            return y(d.close);
+            if(d.ArticleNumber != 0){
+                return y(d.close);
+            }
          })
          .attr("r", 5)
          .attr("fill", 'steelblue')
@@ -169,13 +173,17 @@ d3.csv("./data/gasoline.csv", function(error, data) {
 });
 
 function brushed() {
-  x.domain(brush.empty() ? x2.domain() : brush.extent());
-  focus.select(".line").attr("d", line);
-  focus.select(".x.axis").call(xAxis);
-  focus.selectAll(".circle").attr("cx", function(d) {
+    x.domain(brush.empty() ? x2.domain() : brush.extent());
+    focus.select(".line").attr("d", line);
+    focus.select(".x.axis").call(xAxis);
+    focus.selectAll(".circle").attr("cx", function(d) {
+        if(d.ArticleNumber != 0){
             return x(d.date);
-         })
-         .attr("cy", function(d) {
+        }
+    })
+    .attr("cy", function(d) {
+        if(d.ArticleNumber != 0){
             return y(d.close);
-         });
+        }
+    });
 }
