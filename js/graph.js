@@ -119,19 +119,25 @@ d3.csv("./data/gasoline.csv", function(error, data) {
                 return y(d.close);
             }
          })
-         .attr("r", 5)
+         .attr("r",　function(d) {
+            if(d.ArticleNumber != 0){
+                return 5;
+            }
+         })
          .attr("fill", 'steelblue')
          .on("click", function(d) {
+            var position = 0;
             if(d.ArticleNumber != 0){
-                var position = $("#"+d.ArticleNumber).offset().top;
+                position = $("#"+d.ArticleNumber).offset().top;
+                console.log(position);
                 $("#list").animate({
                     scrollTop : position
                 }, {
                 queue : false
                 });
-                // 現在の縦スクロール位置
+                //現在の縦スクロール位置
                 // var scrollPosition = document.getElementById("list").scrollTop;
-                // document.getElementById("list").scrollTop = position;
+                document.getElementById("list").scrollTop = position;
             }
          });
 
