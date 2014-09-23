@@ -58,124 +58,127 @@ var context = svg.append("g")
     .attr("class", "context")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
-// データを読み込む
-d3.csv("./data/gasoline.csv", function(error, data) {
-    // データをフォーマット
-    data.forEach(function(d) {
-        d.date = parseDate(d.date);
-        d.close = +d.close;
+function test(moji){
+    if(moji == "ガソリンの全国平均価格"){ moji = "gasoline";}
+    // データを読み込む
+    d3.csv("./data/"+moji+".csv", function(error, data) {
+        // データをフォーマット
+        data.forEach(function(d) {
+            d.date = parseDate(d.date);
+            d.close = +d.close;
+        });
+
+        // データを入力ドメインとして設定
+        // 同時にextentで目盛りの単位が適切になるようにする
+        x.domain(d3.extent(data, function(d) { return d.date; }));
+        // y.domain([0, d3.max(data.map(function(d) { return d.close; }))]);
+        y.domain(d3.extent(data, function(d) { return d.close; }));
+        x2.domain(x.domain());
+        y2.domain(y.domain());
+
+        // x軸をsvgに表示
+        focus.append("g")
+             .attr("class", "x axis")
+             .attr("transform", "translate(0," + height + ")")
+             .call(xAxis);
+
+        // y軸をsvgに表示
+        focus.append("g")
+             .attr("class", "y axis")
+             .call(yAxis)
+             .append("text")
+             .attr("transform", "rotate(-90)")
+             .attr("y", 6)
+             .attr("dy", ".71em")
+             .style("text-anchor", "end")
+             .text("Price ($)");
+
+        // 画像の定義
+        var imgList = ['mushroom'];
+
+        // path要素をsvgに表示し、折れ線グラフを設定
+        focus.append("path")
+             .datum(data)
+             .attr("class", "line")
+             .attr("d", line);
+
+
+        //上のグラフに円を描画
+        focus.append("g")
+             .attr("clip-path", "url(#clip)")
+             .selectAll('.circle')
+             .data(data)
+             .enter()
+             .append("circle")
+             .attr('class', 'circle')
+             .attr("cx", function(d) {
+                if(d.ArticleNumber != 0){
+                    return x(d.date);
+                }
+             })
+             .attr("cy", function(d) {
+                if(d.ArticleNumber != 0){
+                    return y(d.close);
+                }
+             })
+             .attr("r",　function(d) {
+                if(d.ArticleNumber != 0){
+                    return 5;
+                }
+             })
+             .attr("fill", 'steelblue')
+             .on("click", function(d) {
+                var titleHeight = document.getElementById("title").clientHeight;
+                var searchboxHeight = document.getElementById("searchbox").clientHeight;
+                var position = document.getElementById(d.ArticleNumber).offsetTop;
+
+                // $("#list").animate({
+                //     scrollTop : position
+                // }, {
+                // queue : false
+                // });
+                //現在の縦スクロール位置
+                // var scrollPosition = document.getElementById("list").scrollTop;
+                document.getElementById("list").scrollTop = position - (titleHeight + searchboxHeight + 10);
+             });
+
+        context.append("path")
+               .datum(data)
+               .attr("class", "line")
+               .attr("d", line2);
+
+        context.append("g")
+               .attr("class", "x axis")
+               .attr("transform", "translate(0," + height2 + ")")
+               .call(xAxis2);
+
+        context.append("g")
+               .attr("class", "x brush")
+               .call(brush)
+               .selectAll("rect")
+               .attr("y", -6)
+               .attr("height", height2 + 7);
+
+        // focus.append('image')
+        //      .datum(data)
+        //      .attr({
+        //       'xlink:href': function (data) {
+        //         return 'images/arrow2.png';
+        //        },
+        //        'width'     : 50,
+        //        'height'    : 50,
+        //        'x'         : 165,
+        //        'y'         : -15,
+        //        'class'     : 'arrow'
+        //      });
+
+        //     var iconimg = document.querySelector('.arrow');
+
+        //     iconimg.addEventListener("click", function(){
+        //         document.querySelector('.article').style.fontWeight = 'bolder';
+        //     });
     });
-
-    // データを入力ドメインとして設定
-    // 同時にextentで目盛りの単位が適切になるようにする
-    x.domain(d3.extent(data, function(d) { return d.date; }));
-    // y.domain([0, d3.max(data.map(function(d) { return d.close; }))]);
-    y.domain(d3.extent(data, function(d) { return d.close; }));
-    x2.domain(x.domain());
-    y2.domain(y.domain());
-
-    // x軸をsvgに表示
-    focus.append("g")
-         .attr("class", "x axis")
-         .attr("transform", "translate(0," + height + ")")
-         .call(xAxis);
-
-    // y軸をsvgに表示
-    focus.append("g")
-         .attr("class", "y axis")
-         .call(yAxis)
-         .append("text")
-         .attr("transform", "rotate(-90)")
-         .attr("y", 6)
-         .attr("dy", ".71em")
-         .style("text-anchor", "end")
-         .text("Price ($)");
-
-    // 画像の定義
-    var imgList = ['mushroom'];
-
-    // path要素をsvgに表示し、折れ線グラフを設定
-    focus.append("path")
-         .datum(data)
-         .attr("class", "line")
-         .attr("d", line);
-
-
-    //上のグラフに円を描画
-    focus.append("g")
-         .attr("clip-path", "url(#clip)")
-         .selectAll('.circle')
-         .data(data)
-         .enter()
-         .append("circle")
-         .attr('class', 'circle')
-         .attr("cx", function(d) {
-            if(d.ArticleNumber != 0){
-                return x(d.date);
-            }
-         })
-         .attr("cy", function(d) {
-            if(d.ArticleNumber != 0){
-                return y(d.close);
-            }
-         })
-         .attr("r",　function(d) {
-            if(d.ArticleNumber != 0){
-                return 5;
-            }
-         })
-         .attr("fill", 'steelblue')
-         .on("click", function(d) {
-            var titleHeight = document.getElementById("title").clientHeight;
-            var searchboxHeight = document.getElementById("searchbox").clientHeight;
-            var position = document.getElementById(d.ArticleNumber).offsetTop;
-
-            // $("#list").animate({
-            //     scrollTop : position
-            // }, {
-            // queue : false
-            // });
-            //現在の縦スクロール位置
-            // var scrollPosition = document.getElementById("list").scrollTop;
-            document.getElementById("list").scrollTop = position - (titleHeight + searchboxHeight + 10);
-         });
-
-    context.append("path")
-           .datum(data)
-           .attr("class", "line")
-           .attr("d", line2);
-
-    context.append("g")
-           .attr("class", "x axis")
-           .attr("transform", "translate(0," + height2 + ")")
-           .call(xAxis2);
-
-    context.append("g")
-           .attr("class", "x brush")
-           .call(brush)
-           .selectAll("rect")
-           .attr("y", -6)
-           .attr("height", height2 + 7);
-
-    // focus.append('image')
-    //      .datum(data)
-    //      .attr({
-    //       'xlink:href': function (data) {
-    //         return 'images/arrow2.png';
-    //        },
-    //        'width'     : 50,
-    //        'height'    : 50,
-    //        'x'         : 165,
-    //        'y'         : -15,
-    //        'class'     : 'arrow'
-    //      });
-
-    //     var iconimg = document.querySelector('.arrow');
-
-    //     iconimg.addEventListener("click", function(){
-    //         document.querySelector('.article').style.fontWeight = 'bolder';
-    //     });
-});
+}
 
 function brushed() {
     x.domain(brush.empty() ? x2.domain() : brush.extent());
