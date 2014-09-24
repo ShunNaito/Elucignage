@@ -10,7 +10,7 @@ var margin = {top: 10, right: 10, bottom: 150, left: 40},
     //height2 = 500 - margin2.top - margin2.bottom;
     height2 = 650 - margin2.top - margin2.bottom;
 
-var parseDate = d3.time.format("%Y/%m").parse;
+var parseDate = d3.time.format("%Y%m").parse;
 
 // スケールと出力レンジの定義
 var x = d3.time.scale().range([0, width]),
@@ -59,7 +59,10 @@ var context = svg.append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 function test(moji){
+    $('.focus').empty();
+    $('.context').empty();
     if(moji == "ガソリンの全国平均価格"){ moji = "gasoline";}
+    if(moji == "ドバイ原油価格"){ moji = "dubai";}
     // データを読み込む
     d3.csv("./data/"+moji+".csv", function(error, data) {
         // データをフォーマット
