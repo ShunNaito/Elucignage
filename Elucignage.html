@@ -16,8 +16,11 @@
                     <script src="js/graph.js"></script>
                 </div>
                 <div id="searchbox">
-                    <form name="search">
-                        統計情報名：<input type="text" name="txtb" value="ガソリンの全国平均価格"><input type="button" value="検索" onclick="tbox1()">
+                    <form method=post>
+                       <select onChange="drawGraph(this)">
+                        <option value="gasoline">ガソリンの全国平均価格
+                        <option value="dubai">ドバイの原油価格
+                        </select>
                     </form>
                 </div>
                 <div id="list">

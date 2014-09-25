@@ -58,18 +58,19 @@ var context = svg.append("g")
     .attr("class", "context")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
-function test(moji){
-    $('.focus').empty();
-    $('.context').empty();
-    if(moji == "ガソリンの全国平均価格"){ moji = "gasoline";}
-    if(moji == "ドバイ原油価格"){ moji = "dubai";}
-    // データを読み込む
-    d3.csv("./data/"+moji+".csv", function(error, data) {
-        // データをフォーマット
-        data.forEach(function(d) {
-            d.date = parseDate(d.date);
-            d.close = +d.close;
-        });
+function drawGraph(obj){
+     url = obj.options[obj.selectedIndex].value;
+    if(url != "") {
+        tbox1();
+        $('.focus').empty();
+        $('.context').empty();
+        // データを読み込む
+        d3.csv("./data/"+url+".csv", function(error, data) {
+            // データをフォーマット
+            data.forEach(function(d) {
+                d.date = parseDate(d.date);
+                d.close = +d.close;
+            });
 
         // データを入力ドメインとして設定
         // 同時にextentで目盛りの単位が適切になるようにする
@@ -188,6 +189,7 @@ function test(moji){
         //     });
 
     });
+    }
 }
 
 function brushed() {

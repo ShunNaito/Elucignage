@@ -2,8 +2,6 @@ var xmlFiles = new Array("980214080.xml","980324105.xml","980527181.xml","981114
 
 // ボタンがクリックされた時の処理
 function tbox1() {
-    var str1=document.search.txtb.value;
-    test(str1);
     for(var i=0; i<xmlFiles.length; i++){
     // リストの要素を空に
     $('#list').empty();
