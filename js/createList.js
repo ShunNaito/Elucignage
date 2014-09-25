@@ -40,6 +40,7 @@ var createList = function(xml) {
 
 //本文を表示させる
 function viewSource(num){
+    $("#circle"+num).attr("r",10);
     $('.article').remove();
     $.get("./data/" + num +".xml",
         {},

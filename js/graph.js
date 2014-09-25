@@ -108,6 +108,7 @@ function test(moji){
 
         //上のグラフに円を描画
         focus.append("g")
+             .attr("class", "circles")
              .attr("clip-path", "url(#clip)")
              .selectAll('.circle')
              .data(data)
@@ -127,6 +128,11 @@ function test(moji){
              .attr("r",　function(d) {
                 if(d.ArticleNumber != 0){
                     return 5;
+                }
+             })
+             .attr('id',　function(d) {
+                if(d.ArticleNumber != 0){
+                    return "circle"+d.ArticleNumber;
                 }
              })
              .attr("fill", 'steelblue')
@@ -180,6 +186,7 @@ function test(moji){
         //     iconimg.addEventListener("click", function(){
         //         document.querySelector('.article').style.fontWeight = 'bolder';
         //     });
+
     });
 }
 
