@@ -5,7 +5,6 @@ function tbox1() {
     for(var i=0; i<xmlFiles.length; i++){
     // リストの要素を空に
     $('#list').empty();
-
         // 「data.xml」を読み込む
         $.get("./data/" + xmlFiles[i],
               {},
@@ -19,21 +18,28 @@ function tbox1() {
 var j = 0;
 // 表を作成する関数
 var createList = function(xml) {
-    // datasetタグの要素を繰り返し処理する
-    $(xml).find("DOC").each(function(){
-        // TEXTタグの中身を取り出す
-        var label = $(this).find("TEXT").text();
-        // DOCNOの値を取り出す
-        var num = $(this).find("DOCNO").text();
-        // header行にラベルの列を追加する
-        var $div = $('<div>')
+    var label = "";
+    var num;
+    // DOCNOの値を取り出す
+    $(xml).find("DOCNO").each(function(){
+        num = $(this).text();
+    });
+    var $div = $('<div>')
         .attr({"id": num,
-           "class": 'article',
-           "onClick": 'viewSource('+ num +')'})
-        .text(label);;
+       "class": 'article',
+       "onClick": 'viewSource('+ num +')'})
+    // datasetタグの要素を繰り返し処理する
+    $(xml).find("del").each(function(){
+        // data_labelタグのテキストを取り出す
+        label = $(this).text();
+        label += "...";
+        $div.append(label+'<br>');
+    });
+    // header行にラベルの列を追加する
+    if(label != 0){
         $('#list').append($div);
         j++;
-    });
+    }
 };
 
 //本文を表示させる
