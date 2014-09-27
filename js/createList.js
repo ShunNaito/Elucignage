@@ -1,7 +1,20 @@
 var xmlFiles = new Array("980214080.xml","980324105.xml","980527181.xml","981114074.xml","981115231.xml","981125080.xml","990405108.xml","990530053.xml","990606194.xml","990610074.xml","990617020.xml","990624031.xml","990714086.xml","990717070.xml","990817066.xml","990824079.xml","990828074.xml","990917084.xml","990924069.xml","990928069.xml");
 
+var range;
+var scroll;
+var scrollpoint;
+
 // ボタンがクリックされた時の処理
 function tbox1(num) {
+    // document.getElementById("list").onscroll = function(){
+    //     // スクロールされたピクセル数
+    //     scroll = this.scrollTop;
+
+    //     // スクロール範囲の最大のピクセル数
+    //     range = this.scrollHeight - this.offsetHeight;
+
+    //     console.log(scroll);
+    // }
     $("#circle"+num).attr("r",5);
     for(var i=0; i<xmlFiles.length; i++){
     // リストの要素を空に
@@ -38,13 +51,13 @@ var createList = function(xml) {
     if(label != 0){
         $('#list').append($div);
     }
+    document.getElementById("list").scrollTop = scroll;
 };
 
 //本文を表示させる
 function viewSource(num){
+    scroll = document.getElementById("list").scrollTop;
     $("#circle"+num).attr("r",10);
-    var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
-    console.log(scrollY);
     $('.article').remove();
     $.get("./data/" + num +".xml",
         {},
