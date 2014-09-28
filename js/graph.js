@@ -108,35 +108,62 @@ function drawGraph(obj){
 
 
         //上のグラフに円を描画
+        // focus.append("g")
+        //      .attr("class", "circles")
+        //      .attr("clip-path", "url(#clip)")
+        //      .selectAll('.circle')
+        //      .data(data)
+        //      .enter()
+        //      .append("circle")
+        //      .attr('class', 'circle')
+        //      .attr("cx", function(d) {
+        //         if(d.ArticleNumber != 0){
+        //             return x(d.date);
+        //         }
+        //      })
+        //      .attr("cy", function(d) {
+        //         if(d.ArticleNumber != 0){
+        //             return y(d.close);
+        //         }
+        //      })
+        //      .attr("r",　function(d) {
+        //         if(d.ArticleNumber != 0){
+        //             return 5;
+        //         }
+        //      })
+        //      .attr('id',　function(d) {
+        //         if(d.ArticleNumber != 0){
+        //             return "circle"+d.ArticleNumber;
+        //         }
+        //      })
+        //      .attr("fill", 'steelblue')
         focus.append("g")
-             .attr("class", "circles")
+             .attr("class", "arrows")
              .attr("clip-path", "url(#clip)")
-             .selectAll('.circle')
+             .selectAll('.arrow')
              .data(data)
              .enter()
-             .append("circle")
-             .attr('class', 'circle')
-             .attr("cx", function(d) {
+             .append('image')
+             .attr("class", "arrow")
+             .attr({
+              'xlink:href': function (d) {
                 if(d.ArticleNumber != 0){
-                    return x(d.date);
+                    return 'images/arrow2.png';
+                }
+               },
+               'width' : 50,
+               'height': 50,
+             })
+             .attr("x", function(d) {
+                if(d.ArticleNumber != 0){
+                    return x(d.date)-25;
                 }
              })
-             .attr("cy", function(d) {
+             .attr("y", function(d) {
                 if(d.ArticleNumber != 0){
-                    return y(d.close);
+                    return y(d.close)-25;
                 }
              })
-             .attr("r",　function(d) {
-                if(d.ArticleNumber != 0){
-                    return 5;
-                }
-             })
-             .attr('id',　function(d) {
-                if(d.ArticleNumber != 0){
-                    return "circle"+d.ArticleNumber;
-                }
-             })
-             .attr("fill", 'steelblue')
              .on("click", function(d) {
                 var titleHeight = document.getElementById("title").clientHeight;
                 var searchboxHeight = document.getElementById("searchbox").clientHeight;
@@ -196,14 +223,24 @@ function brushed() {
     x.domain(brush.empty() ? x2.domain() : brush.extent());
     focus.select(".line").attr("d", line);
     focus.select(".x.axis").call(xAxis);
-    focus.selectAll(".circle").attr("cx", function(d) {
-        if(d.ArticleNumber != 0){
-            return x(d.date);
-        }
-    })
-    .attr("cy", function(d) {
-        if(d.ArticleNumber != 0){
-            return y(d.close);
-        }
-    });
+    // focus.selectAll(".circle").attr("cx", function(d) {
+    //     if(d.ArticleNumber != 0){
+    //         return x(d.date);
+    //     }
+    // })
+    // .attr("cy", function(d) {
+    //     if(d.ArticleNumber != 0){
+    //         return y(d.close);
+    //     }
+    // });
+    focus.selectAll(".arrow").attr("x", function(d) {
+            if(d.ArticleNumber != 0){
+                return x(d.date)-25;
+            }
+        })
+        .attr("y", function(d) {
+            if(d.ArticleNumber != 0){
+                return y(d.close)-25;
+            }
+        });
 }
