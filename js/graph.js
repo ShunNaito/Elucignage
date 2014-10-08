@@ -107,36 +107,51 @@ function drawGraph(obj){
              .attr("d", line);
 
 
-        //上のグラフに円を描画
-        // focus.append("g")
-        //      .attr("class", "circles")
-        //      .attr("clip-path", "url(#clip)")
-        //      .selectAll('.circle')
-        //      .data(data)
-        //      .enter()
-        //      .append("circle")
-        //      .attr('class', 'circle')
-        //      .attr("cx", function(d) {
-        //         if(d.ArticleNumber != 0){
-        //             return x(d.date);
-        //         }
-        //      })
-        //      .attr("cy", function(d) {
-        //         if(d.ArticleNumber != 0){
-        //             return y(d.close);
-        //         }
-        //      })
-        //      .attr("r",　function(d) {
-        //         if(d.ArticleNumber != 0){
-        //             return 5;
-        //         }
-        //      })
-        //      .attr('id',　function(d) {
-        //         if(d.ArticleNumber != 0){
-        //             return "circle"+d.ArticleNumber;
-        //         }
-        //      })
-        //      .attr("fill", 'steelblue')
+        // 上のグラフに円を描画
+        focus.append("g")
+             .attr("class", "circles")
+             .attr("clip-path", "url(#clip)")
+             .selectAll('.circle')
+             .data(data)
+             .enter()
+             .append("circle")
+             .attr('class', 'circle')
+             .attr("cx", function(d) {
+                if(d.ArticleNumber != 0){
+                    return x(d.date);
+                }
+             })
+             .attr("cy", function(d) {
+                if(d.ArticleNumber != 0){
+                    return y(d.close);
+                }
+             })
+             .attr("r",　function(d) {
+                if(d.ArticleNumber != 0){
+                    return 5;
+                }
+             })
+             .attr('id',　function(d) {
+                if(d.ArticleNumber != 0){
+                    return "circle"+d.ArticleNumber;
+                }
+             })
+             .attr("fill", 'steelblue')
+             .on("click", function(d) {
+                var titleHeight = document.getElementById("title").clientHeight;
+                var searchboxHeight = document.getElementById("searchbox").clientHeight;
+                var position = document.getElementById(d.ArticleNumber).offsetTop;
+
+                // $("#list").animate({
+                //     scrollTop : position
+                // }, {
+                // queue : false
+                // });
+                //現在の縦スクロール位置
+                // var scrollPosition = document.getElementById("list").scrollTop;
+                document.getElementById("list").scrollTop = position - (titleHeight + searchboxHeight + 10);
+             });
+
         focus.append("g")
              .attr("class", "arrows")
              .attr("clip-path", "url(#clip)")
@@ -147,20 +162,20 @@ function drawGraph(obj){
              .attr("class", "arrow")
              .attr({
               'xlink:href': function (d) {
-                if(d.ArticleNumber != 0){
-                    return 'images/arrow2.png';
+                if(d.arrow != 0){
+                    return 'images/'+d.arrow+'.png';
                 }
                },
                'width' : 50,
                'height': 50,
              })
              .attr("x", function(d) {
-                if(d.ArticleNumber != 0){
+                if(d.arrow != 0){
                     return x(d.date)-25;
                 }
              })
              .attr("y", function(d) {
-                if(d.ArticleNumber != 0){
+                if(d.arrow != 0){
                     return y(d.close)-25;
                 }
              })
@@ -223,23 +238,23 @@ function brushed() {
     x.domain(brush.empty() ? x2.domain() : brush.extent());
     focus.select(".line").attr("d", line);
     focus.select(".x.axis").call(xAxis);
-    // focus.selectAll(".circle").attr("cx", function(d) {
-    //     if(d.ArticleNumber != 0){
-    //         return x(d.date);
-    //     }
-    // })
-    // .attr("cy", function(d) {
-    //     if(d.ArticleNumber != 0){
-    //         return y(d.close);
-    //     }
-    // });
+    focus.selectAll(".circle").attr("cx", function(d) {
+        if(d.ArticleNumber != 0){
+            return x(d.date);
+        }
+    })
+    .attr("cy", function(d) {
+        if(d.ArticleNumber != 0){
+            return y(d.close);
+        }
+    });
     focus.selectAll(".arrow").attr("x", function(d) {
-            if(d.ArticleNumber != 0){
+            if(d.arrow != 0){
                 return x(d.date)-25;
             }
         })
         .attr("y", function(d) {
-            if(d.ArticleNumber != 0){
+            if(d.arrow != 0){
                 return y(d.close)-25;
             }
         });
