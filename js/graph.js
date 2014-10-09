@@ -58,14 +58,17 @@ var context = svg.append("g")
     .attr("class", "context")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
-function drawGraph(obj){
-     url = obj.options[obj.selectedIndex].value;
-    if(url != "") {
+function drawGraph(){
+    obj = document.test.linkselect;
+    index = obj.selectedIndex;
+    href = obj.options[index].value;
+    console.log(href);
+    if(href != ""){
         tbox1();
         $('.focus').empty();
         $('.context').empty();
         // データを読み込む
-        d3.csv("./data/"+url+".csv", function(error, data) {
+        d3.csv("./data/"+href+".csv", function(error, data) {
             // データをフォーマット
             data.forEach(function(d) {
                 d.date = parseDate(d.date);
