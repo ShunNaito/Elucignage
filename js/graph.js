@@ -129,12 +129,12 @@ function drawGraph(){
                     return y(d.close);
                 }
              })
-             .attr("r",　function(d) {
+             .attr("r", function(d) {
                 if(d.ArticleNumber != 0){
                     return 5;
                 }
              })
-             .attr('id',　function(d) {
+             .attr('id', function(d) {
                 if(d.ArticleNumber != 0){
                     return "circle"+d.ArticleNumber;
                 }
