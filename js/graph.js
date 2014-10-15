@@ -59,9 +59,9 @@ var context = svg.append("g")
     .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
 
 function drawGraph(){
-    obj = document.test.linkselect;
-    index = obj.selectedIndex;
-    href = obj.options[index].value;
+    var obj = document.test.linkselect;
+    var index = obj.selectedIndex;
+    var href = obj.options[index].value;
     console.log(href);
     if(href != ""){
         tbox1();
@@ -129,12 +129,12 @@ function drawGraph(){
                     return y(d.close);
                 }
              })
-             .attr("r",　function(d) {
+             .attr("r", function(d) {
                 if(d.ArticleNumber != 0){
                     return 5;
                 }
              })
-             .attr('id',　function(d) {
+             .attr('id', function(d) {
                 if(d.ArticleNumber != 0){
                     return "circle"+d.ArticleNumber;
                 }
